@@ -60,8 +60,8 @@ class DateEntry(Frame):
                           invalidcommand=self.dd_invalid,
                           state='readonly')
         self.e1.grid(row=1, column=1)
-        self.e1.bind("<<Increment>>", lambda _ : print("<<Increment>>"))
-        self.e1.bind("<<Decrement>>", lambda _ : print("<<Decrement>>"))
+        self.e1.bind("<<Increment>>", lambda _: print("<<Increment>>"))
+        self.e1.bind("<<Decrement>>", lambda _: print("<<Decrement>>"))
 
         self.e2 = Spinbox(self, width=4, increment=1, wrap=True,
                           textvariable=self.mm_var, state='readonly',
@@ -77,6 +77,7 @@ class DateEntry(Frame):
         self.configure(relief="groove", borderwidth=3)
         return
 
+    @property
     def get(self):
         return dttm(self.yy_var.get(), self.month_names.index(self.mm_var.get()), self.dd_var.get())
 
@@ -122,12 +123,15 @@ class DateEntry(Frame):
         return
 
     def focus_in(self, event):
+        print(event, "event occurred.")
         self.e1.focus_force()
         return
 
     def focus_out(self, event):
+        print(event, "event occurred.")
         try:
-            x = self.get()
+            x = self.get
+            print(x)
         except ValueError as e:
             print(e)
             x = dttm.now()
@@ -164,7 +168,7 @@ def main():
     b = Button(root, text="Toggle Hints", command=de.toggle_hints)
     b.grid(padx=50, pady=50)
     root.mainloop()
-    print(de.get())
+    print(de.get)
 
 
 if __name__ == '__main__':

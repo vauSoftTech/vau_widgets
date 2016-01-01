@@ -23,12 +23,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """
-from tkinter import *
-from tkinter.ttk import *
 from datetime import datetime as dttm
 from datetime import time as tm
-
-import calendar
+from tkinter import *
+from tkinter.ttk import *
 
 
 class TimeEntry(Frame):
@@ -61,12 +59,10 @@ class TimeEntry(Frame):
 
         self.e1 = Spinbox(self, width=2, increment=1, wrap=True,
                           textvariable=self.hh_var, validate="focusout",
-                          validatecommand=self.dd_validate,
-                          invalidcommand=self.dd_invalid,
                           state='readonly', values=self.hh_values)
         self.e1.grid(row=1, column=1)
-        self.e1.bind("<<Increment>>", lambda _ : print("<<Increment>>"))
-        self.e1.bind("<<Decrement>>", lambda _ : print("<<Decrement>>"))
+        self.e1.bind("<<Increment>>", lambda _: print("<<Increment>>"))
+        self.e1.bind("<<Decrement>>", lambda _: print("<<Decrement>>"))
 
         self.e2 = Spinbox(self, width=2, increment=1, wrap=True,
                           textvariable=self.mm_var, state='readonly',
@@ -83,8 +79,9 @@ class TimeEntry(Frame):
         self.configure(relief="groove", borderwidth=3)
         return
 
+    @property
     def get(self):
-        print(tm(self.hh_var.get(), self.mm_var.get(), self.ss_var.get()) )
+        print(tm(self.hh_var.get(), self.mm_var.get(), self.ss_var.get()))
         return tm(self.hh_var.get(), self.mm_var.get(), self.ss_var.get())
 
     def set(self, time_value):
@@ -93,27 +90,16 @@ class TimeEntry(Frame):
         self.ss_var.set(time_value.second)
         return
 
-    def dd_validate(self):
-        return True
-
-    def dd_invalid(self):
-        return True
-
-    def dd_increment(self):
-        # print(self.hh_var.get())
-        return
-
-    def dd_decrement(self):
-        # print(self.hh_var.get())
-        return
-
     def focus_in(self, event):
+        print(event, "occurred.")
         self.e1.focus_force()
         return
 
     def focus_out(self, event):
+        print(event, "occurred.")
         try:
-            x = self.get()
+            x = self.get
+            print(x)
         except ValueError as e:
             print(e)
             self.set(dttm.now().time())
@@ -149,7 +135,7 @@ def main():
     b = Button(root, text="Toggle Hints", command=de.toggle_hints)
     b.grid(padx=50, pady=50)
     root.mainloop()
-    print(de.get())
+    print(de.get)
 
 
 if __name__ == '__main__':
