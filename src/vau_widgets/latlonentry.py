@@ -72,10 +72,10 @@ class LatLonEntry(Frame):
         self.hints = True
 
         self.lat_label = Label(self, text=lat_label)
-        self.lat_label.grid(row=1, column=0)
+        self.lat_label.grid(row=1, column=0, sticky=E)
 
         self.lon_label = Label(self, text=lon_label)
-        self.lon_label.grid(row=2, column=0)
+        self.lon_label.grid(row=2, column=0, sticky=E)
 
         # Latitude Entry Classes
         self.lat_deg_e = Spinbox(self, from_=0, to=180, state="readonly",
@@ -98,6 +98,15 @@ class LatLonEntry(Frame):
                                  width=5)
         self.lat_fra_e.grid(row=1, column=4)
 
+        # North or South Hemisphere selection Radiobuttons
+        self.lat_rb_n = Radiobutton(self, text='North', variable=self.lat_is_N,
+                                    value=True, command=self.rb_ns_command)
+        self.lat_rb_n.grid(row=1, column=5, sticky=W)
+
+        self.lat_rb_s = Radiobutton(self, text='South', variable=self.lat_is_N,
+                                    value=False, command=self.rb_ns_command)
+        self.lat_rb_s.grid(row=1, column=6, sticky=W)
+
         # Longitude Entry Classes
         self.lon_deg_e = Spinbox(self, from_=0, to=180, state="readonly",
                                  textvar=self.lon_deg_var, justify=RIGHT,
@@ -118,6 +127,32 @@ class LatLonEntry(Frame):
                                  textvar=self.lon_fra_var, justify=RIGHT,
                                  width=5)
         self.lon_fra_e.grid(row=2, column=4)
+
+        # East or West Direction selection Radiobuttons
+        self.lon_rb_n = Radiobutton(self, text='East', variable=self.lon_is_E,
+                                    value=True, command=self.rb_ew_command)
+        self.lon_rb_n.grid(row=2, column=5, sticky=W)
+
+        self.lon_rb_s = Radiobutton(self, text='West', variable=self.lon_is_E,
+                                    value=False, command=self.rb_ew_command)
+        self.lon_rb_s.grid(row=2, column=6, sticky=W)
+
+        return
+
+    def rb_ns_command(self):
+        if self.lat_is_N.get():
+            print("Northern hemisphere selected.")
+        else:
+            print("Southern hemisphere selected.")
+        self.bell()
+        return
+
+    def rb_ew_command(self):
+        if self.lon_is_E.get():
+            print("Eastern Direction selected.")
+        else:
+            print("Western Direction selected.")
+        self.bell()
         return
 
     def show_hints(self):
@@ -179,7 +214,7 @@ class LatLonEntry(Frame):
 
     @property
     def get_latitude_decimal(self):
-        a = 1 if self.lat_is_N else -1
+        a = 1 if self.lat_is_N.get() else -1
         b = self.lat_deg_var.get()
         c = self.lat_min_var.get()
         d = self.lat_sec_var.get()
@@ -190,7 +225,7 @@ class LatLonEntry(Frame):
 
     @property
     def get_longitude_decimal(self):
-        a = 1 if self.lon_is_E else -1
+        a = 1 if self.lon_is_E.get() else -1
         b = self.lon_deg_var.get()
         c = self.lon_min_var.get()
         d = self.lon_sec_var.get()
@@ -200,7 +235,7 @@ class LatLonEntry(Frame):
 
     @property
     def get_latitude_str(self):
-        a = "N" if self.lat_is_N else "S"
+        a = "N" if self.lat_is_N.get() else "S"
         b = self.lat_deg_var.get()
         c = self.lat_min_var.get()
         d = self.lat_sec_var.get()
@@ -210,7 +245,7 @@ class LatLonEntry(Frame):
 
     @property
     def get_longitude_str(self):
-        a = "E" if self.lon_is_E else "W"
+        a = "E" if self.lon_is_E.get() else "W"
         b = self.lon_deg_var.get()
         c = self.lon_min_var.get()
         d = self.lon_sec_var.get()
@@ -300,8 +335,8 @@ class LatLonEntry(Frame):
         if isinstance(decimal_value, float):
             self.lat_is_N.set(decimal_value >= 0)
             x = int(decimal_value)
-            y = int((decimal_value - x)*60)
-            z = int((decimal_value - (x + (y/60)))*3600)
+            y = int((decimal_value - x) * 60)
+            z = int((decimal_value - (x + (y / 60))) * 3600)
             self.lat_deg_var.set(x)
             self.lat_min_var.set(y)
             self.lat_sec_var.set(z)
@@ -313,8 +348,8 @@ class LatLonEntry(Frame):
         if isinstance(decimal_value, float):
             self.lon_is_E.set(decimal_value >= 0)
             x = int(decimal_value)
-            y = int((decimal_value - x)*60)
-            z = int((decimal_value - (x + (y/60)))*3600)
+            y = int((decimal_value - x) * 60)
+            z = int((decimal_value - (x + (y / 60))) * 3600)
             self.lon_deg_var.set(x)
             self.lon_min_var.set(y)
             self.lon_sec_var.set(z)
@@ -323,7 +358,7 @@ class LatLonEntry(Frame):
         return
 
     def set_using_decimal_tuple(self, decimal_tuple):
-        if isinstance( decimal_tuple, tuple) and len(decimal_tuple) == 2:
+        if isinstance(decimal_tuple, tuple) and len(decimal_tuple) == 2:
             self.set_latitude_using_decimal(decimal_tuple[0])
             self.set_longitude_using_decimal(decimal_tuple[1])
         else:
@@ -333,7 +368,7 @@ class LatLonEntry(Frame):
 
 def main():
     root = Tk()
-    e = LatLonEntry(root, " Lat : ", " Lon : ")
+    e = LatLonEntry(root, " Latitude : ", " Lonongitude : ")
     e.grid(padx=50, pady=50)
     b = Button(root, text="Toggle Hints", command=e.toggle_hints)
     b.grid(padx=50, pady=50)
