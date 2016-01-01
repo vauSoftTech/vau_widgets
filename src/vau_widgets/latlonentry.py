@@ -368,7 +368,7 @@ class LatLonEntry(Frame):
 
 def main():
     root = Tk()
-    e = LatLonEntry(root, " Latitude : ", " Lonongitude : ")
+    e = LatLonEntry(root, " Latitude : ", " Longitude : ")
     e.grid(padx=50, pady=50)
     b = Button(root, text="Toggle Hints", command=e.toggle_hints)
     b.grid(padx=50, pady=50)
