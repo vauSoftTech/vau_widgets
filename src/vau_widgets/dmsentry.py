@@ -48,7 +48,7 @@ class DMSEntry(Frame):
         self.lm.grid(row=0, column=2)
         self.ls = Label(self, text=" Arc. Seconds ")
         self.ls.grid(row=0, column=3)
-        self.lp = Label(self, text=" Arc. Seconds Fractions ")
+        self.lp = Label(self, text=" Arc. Seconds's Fractions ")
         self.lp.grid(row=0, column=4)
 
         self.lmain = Label(self, text=text_label)
@@ -160,6 +160,35 @@ class DMSEntry(Frame):
         else:
             raise ValueError("Expected Float, found {}".format(value))
         return None
+
+    def hide_hints(self):
+        if self.hints:
+            self.ld.grid(row=0, column=1)
+            self.lm.grid(row=0, column=2)
+            self.ls.grid(row=0, column=3)
+            self.lp.grid(row=0, column=4)
+            self.hints = False
+        else:
+            print("Hints are already hidden!")
+        return None
+
+    def show_hints(self):
+        if self.hints:
+            print("Hints are already visible!")
+        else:
+            self.ld.grid_forget()
+            self.lm.grid_forget()
+            self.ls.grid_forget()
+            self.lp.grid_forget()
+            self.hints = False
+        return None
+
+    def toggle_hints(self):
+        if self.hints:
+            self.hide_hints()
+        else:
+            self.show_hints()
+        return self.hints
 
 
 def main():

@@ -25,3 +25,5 @@
 """
 from .dateentry import *
 from .timeentry import *
+from .dmsentry import *
+from .latlonentry import *
