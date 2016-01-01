@@ -1,0 +1,2 @@
+#! /bin/bash
+export PYTHONPATH="${PYTHONPATH}:/home/u1/work/py/vau_widgets/main/src"
